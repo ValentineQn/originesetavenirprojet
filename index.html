@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Origines et Avenir - Le podcast de la transmission des entreprises familiales</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0a0a0a;
+            --secondary: #2E5CFF;
+            --accent: #00D4A1;
+            --text: #2d2d2d;
+            --text-light: #666;
+            --bg: #fafafa;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* Cursor effect */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--secondary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.15s ease;
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--secondary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.15s ease, opacity 0.3s;
+            opacity: 0.5;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(250, 250, 250, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            animation: slideDown 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .logo {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.02em;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-menu a:hover {
+            color: var(--secondary);
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 5% 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 80% 20%, rgba(46, 92, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 60% 80%, rgba(0, 212, 161, 0.05) 0%, transparent 50%);
+            opacity: 0;
+            animation: fadeInBg 1s ease-out 0.3s forwards;
+        }
+
+        @keyframes fadeInBg {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            letter-spacing: -0.03em;
+        }
+
+        .hero-text h1 .highlight {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+            background-size: 200% 200%;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-box {
+            animation: fadeInUp 0.8s ease-out backwards;
+        }
+
+        .stat-box:nth-child(1) { animation-delay: 0.2s; }
+        .stat-box:nth-child(2) { animation-delay: 0.3s; }
+
+        .stat-number {
+            font-family: 'Space Mono', monospace;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--secondary);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            max-width: 200px;
+            line-height: 1.5;
+        }
+
+        .hero-description {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: var(--text-light);
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 0.8s ease-out 0.4s backwards;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease-out 0.6s backwards;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            border: none;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--white);
+            box-shadow: 0 4px 20px rgba(10, 10, 10, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(10, 10, 10, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        .hero-visual {
+            position: relative;
+            animation: fadeIn 1s ease-out 0.3s backwards;
+        }
+
+        .visual-card {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .visual-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            transform: translateX(-100%);
+            animation: shimmerOnce 1.5s ease-out 0.5s forwards;
+        }
+
+        .visual-card:hover::before {
+            animation: shimmer 1.5s ease-out;
+        }
+
+        @keyframes shimmerOnce {
+            to { transform: translateX(0); }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .visual-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+
+        .visual-emphasis {
+            font-family: 'Space Mono', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin: 1.5rem 0;
+        }
+
+        /* Mission Section */
+        .mission {
+            padding: 8rem 5%;
+            background: var(--white);
+        }
+
+        .mission-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(46, 92, 255, 0.1);
+            color: var(--secondary);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        .mission h2 {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 3rem;
+            max-width: 800px;
+        }
+
+        .mission-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .mission-card {
+            background: var(--bg);
+            padding: 2.5rem;
+            border-radius: 16px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+        }
+
+        .mission-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .card-icon::before,
+        .card-icon::after {
+            content: '';
+            position: absolute;
+        }
+
+        /* Document with checkmark icon */
+        .card-icon.icon-document::before {
+            width: 20px;
+            height: 26px;
+            border: 2.5px solid white;
+            border-radius: 2px;
+            background: transparent;
+        }
+
+        .card-icon.icon-document::after {
+            width: 8px;
+            height: 4px;
+            border-left: 2.5px solid white;
+            border-bottom: 2.5px solid white;
+            transform: rotate(-45deg);
+            top: 20px;
+            left: 20px;
+            background: transparent;
+        }
+
+        /* Speech bubble icon */
+        .card-icon.icon-chat::before {
+            width: 24px;
+            height: 18px;
+            border: 2.5px solid white;
+            border-radius: 4px;
+            background: transparent;
+            top: 16px;
+        }
+
+        .card-icon.icon-chat::after {
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 6px solid white;
+            top: 36px;
+            left: 24px;
+            background: transparent;
+        }
+
+        /* Connected nodes icon */
+        .card-icon.icon-network::before {
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 
+                12px 0 0 white,
+                6px 10px 0 white,
+                0 0 0 1.5px white,
+                12px 0 0 1.5px white,
+                6px 10px 0 1.5px white;
+            top: 18px;
+            left: 21px;
+        }
+
+        .card-icon.icon-network::after {
+            width: 14px;
+            height: 1.5px;
+            background: white;
+            top: 21px;
+            left: 23px;
+            box-shadow: -3px 10px 0 white;
+        }
+
+        .mission-card h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .mission-card p {
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 8rem 5%;
+            background: linear-gradient(to bottom, var(--white), var(--bg));
+        }
+
+        .features-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .features h2 {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .features-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+            padding: 2rem;
+            background: var(--white);
+            border-radius: 16px;
+            transition: all 0.3s;
+        }
+
+        .feature-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .feature-number {
+            font-family: 'Space Mono', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .feature-content h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            color: var(--primary);
+        }
+
+        .feature-content p {
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        /* Listen Section */
+        .listen {
+            padding: 8rem 5%;
+            background: var(--primary);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .listen::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(46, 92, 255, 0.15) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.3; }
+        }
+
+        .listen-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .listen h2 {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .listen p {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+
+        .platforms {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .platform-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 12px;
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .platform-btn:hover {
+            background: var(--secondary);
+            border-color: var(--secondary);
+            transform: translateY(-5px);
+        }
+
+        /* Newsletter */
+        .newsletter {
+            padding: 8rem 5%;
+            background: var(--bg);
+        }
+
+        .newsletter-container {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .newsletter h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .newsletter p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 1.2rem 1.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem 5% 2rem;
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-brand h3 {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-brand p {
+            opacity: 0.7;
+            line-height: 1.7;
+        }
+
+        .footer-section h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            opacity: 0.7;
+            transition: all 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 2rem auto 0;
+            text-align: center;
+            opacity: 0.5;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .features-list {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .hero-stats {
+                gap: 2rem;
+            }
+
+            .mission-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .platforms {
+                grid-template-columns: 1fr;
+            }
+
+            .cursor-dot,
+            .cursor-outline {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">Origines et Avenir</div>
+        <ul class="nav-menu">
+            <li><a href="#mission">Mission</a></li>
+            <li><a href="#podcast">Le Podcast</a></li>
+            <li><a href="#listen">Écouter</a></li>
+            <li><a href="#newsletter">Newsletter</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>
+                    Le podcast de la <span class="highlight">transmission</span> des entreprises familiales
+                </h1>
+                
+                <div class="hero-stats">
+                    <div class="stat-box">
+                        <div class="stat-number">50%</div>
+                        <div class="stat-label">des entreprises familiales françaises seront transmises d'ici 2035</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">76%</div>
+                        <div class="stat-label">n'ont pas encore structuré leur stratégie de transmission</div>
+                    </div>
+                </div>
+
+                <p class="hero-description">
+                    Origines et Avenir réunit les plus grands experts et dirigeants de l'entreprise familiale. 
+                    Juristes, fiscalistes, family officers et entrepreneurs partagent leurs stratégies éprouvées 
+                    pour orchestrer une transmission harmonieuse et pérenne. Un podcast de référence pour anticiper, 
+                    structurer et réussir la continuité générationnelle de votre patrimoine d'entreprise.
+                </p>
+
+                <div class="cta-buttons">
+                    <a href="#listen" class="btn btn-primary">
+                        Écouter le podcast
+                    </a>
+                    <a href="#mission" class="btn btn-secondary">
+                        En savoir plus
+                    </a>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="visual-card">
+                    <p class="visual-text">
+                        450 000 entreprises familiales représentent 83% du tissu économique français. 
+                        Dans les 10 prochaines années, la moitié d'entre elles changeront de mains...
+                    </p>
+                    <div class="visual-emphasis">76%</div>
+                    <p class="visual-text">
+                        n'ont toujours pas anticipé les enjeux juridiques, fiscaux et humains de leur transmission.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="mission reveal" id="mission">
+        <div class="mission-container">
+            <span class="section-tag">Notre Mission</span>
+            <h2>Décrypter les mécanismes de la transmission pour bâtir l'avenir de votre entreprise</h2>
+            
+            <div class="mission-grid">
+                <div class="mission-card">
+                    <div class="card-icon icon-document"></div>
+                    <h3>Expertise de pointe</h3>
+                    <p>
+                        Avocats spécialisés en droit des affaires familiales, fiscalistes, 
+                        notaires et family officers révèlent les stratégies d'optimisation patrimoniale 
+                        et les montages juridiques essentiels à une transmission sécurisée.
+                    </p>
+                </div>
+                
+                <div class="mission-card">
+                    <div class="card-icon icon-chat"></div>
+                    <h3>Témoignages inspirants</h3>
+                    <p>
+                        Dirigeants de 2ème, 3ème et 4ème génération partagent les coulisses 
+                        de leur transition : gestion des conflits familiaux, passation de pouvoir, 
+                        et adaptation aux nouveaux modèles économiques.
+                    </p>
+                </div>
+                
+                <div class="mission-card">
+                    <div class="card-icon icon-network"></div>
+                    <h3>Gouvernance moderne</h3>
+                    <p>
+                        Pactes d'actionnaires, family offices, conseils de famille : 
+                        découvrez les outils de gouvernance qui permettent de concilier 
+                        performance économique et cohésion familiale sur le long terme.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features reveal" id="podcast">
+        <div class="features-container">
+            <h2>Maîtrisez chaque dimension de la transmission</h2>
+            
+            <div class="features-list">
+                <div class="feature-item">
+                    <div class="feature-number">01</div>
+                    <div class="feature-content">
+                        <h3>Architecture juridique & fiscale</h3>
+                        <p>Holding familiale, donation-partage, démembrement de propriété, pacte Dutreil : 
+                        décryptage des leviers d'optimisation fiscale et des structures juridiques adaptées à chaque situation patrimoniale.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-number">02</div>
+                    <div class="feature-content">
+                        <h3>Gouvernance & organisation familiale</h3>
+                        <p>Mise en place de conseils de famille, rédaction de chartes familiales, 
+                        structuration de family offices : les mécanismes pour professionnaliser la gouvernance 
+                        et prévenir les conflits entre générations et branches familiales.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-number">03</div>
+                    <div class="feature-content">
+                        <h3>Passation de pouvoir & leadership</h3>
+                        <p>Préparation du successeur, transfert progressif des responsabilités, 
+                        gestion de la période de transition : stratégies éprouvées pour assurer la continuité 
+                        managériale tout en préservant la vision et les valeurs de l'entreprise.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-number">04</div>
+                    <div class="feature-content">
+                        <h3>Transformation & modernisation</h3>
+                        <p>Digitalisation, responsabilité sociétale, nouveaux modèles d'affaires : 
+                        comment la nouvelle génération peut réinventer l'entreprise familiale 
+                        sans renier son héritage et sa culture entrepreneuriale.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Listen Section -->
+    <section class="listen reveal" id="listen">
+        <div class="listen-container">
+            <h2>Écoutez Origines & Avenir</h2>
+            <p>Disponible sur toutes vos plateformes préférées</p>
+            
+            <div class="platforms">
+                <a href="#" class="platform-btn">Spotify</a>
+                <a href="#" class="platform-btn">Apple Podcasts</a>
+                <a href="#" class="platform-btn">YouTube</a>
+                <a href="#" class="platform-btn">Deezer</a>
+                <a href="#" class="platform-btn">Amazon Music</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter reveal" id="newsletter">
+        <div class="newsletter-container">
+            <h2>Rejoignez la communauté des décideurs</h2>
+            <p>Recevez en exclusivité nos analyses d'experts, retours d'expérience et outils pratiques pour anticiper et réussir votre transmission</p>
+            
+            <form class="newsletter-form">
+                <input 
+                    type="email" 
+                    class="newsletter-input" 
+                    placeholder="Votre adresse email" 
+                    required
+                >
+                <button type="submit" class="btn btn-primary">S'abonner</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>Origines & Avenir</h3>
+                <p>
+                    Le podcast de référence sur la transmission des entreprises familiales. 
+                    Expertise juridique et fiscale, témoignages de dirigeants, stratégies de gouvernance : 
+                    les clés pour pérenniser votre patrimoine entrepreneurial.
+                </p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Navigation</h4>
+                <ul class="footer-links">
+                    <li><a href="#mission">Mission</a></li>
+                    <li><a href="#podcast">Le Podcast</a></li>
+                    <li><a href="#listen">Écouter</a></li>
+                    <li><a href="#newsletter">Newsletter</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Ressources</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Tous les épisodes</a></li>
+                    <li><a href="#">Articles</a></li>
+                    <li><a href="#">Guides pratiques</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Suivez-nous</h4>
+                <ul class="footer-links">
+                    <li><a href="#">LinkedIn</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">YouTube</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            © 2026 Origines et Avenir. Tous droits réservés.
+        </div>
+    </footer>
+
+    <script>
+        // Custom cursor
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+
+        window.addEventListener('mousemove', (e) => {
+            cursorDot.style.left = e.clientX + 'px';
+            cursorDot.style.top = e.clientY + 'px';
+            
+            cursorOutline.style.left = e.clientX + 'px';
+            cursorOutline.style.top = e.clientY + 'px';
+        });
+
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        
+        const revealOnScroll = () => {
+            const windowHeight = window.innerHeight;
+            
+            reveals.forEach(reveal => {
+                const revealTop = reveal.getBoundingClientRect().top;
+                const revealPoint = 100;
+                
+                if (revealTop < windowHeight - revealPoint) {
+                    reveal.classList.add('active');
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll();
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
